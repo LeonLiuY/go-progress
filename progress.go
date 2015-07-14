@@ -1,14 +1,16 @@
+// Package progress provides visibility & callback for IO progress.
 package progress
 
 import (
 	"io"
 )
 
+// Wrap an io.Reader instance, add progress information.
 type ProgressReader struct {
 	Input io.Reader
 	Size int64
 	Finished int64
-	OnProgress func(float32)
+	OnProgress func(float32) //callback function when updating progress
 }
 
 func NewProgressReader(input io.Reader, size int64) *ProgressReader {
