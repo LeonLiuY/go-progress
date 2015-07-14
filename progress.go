@@ -18,7 +18,7 @@ func NewProgressReader(input io.Reader, size int64) *ProgressReader {
 	return p
 }
 
-func (c ProgressReader) Read(p []byte) (n int, err error) {
+func (c *ProgressReader) Read(p []byte) (n int, err error) {
     cBytes, err := c.Input.Read(p)
     c.Finished = c.Finished + int64(cBytes)
 	return cBytes, err
