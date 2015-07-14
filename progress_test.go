@@ -8,8 +8,19 @@ import (
 func TestProgressReader(t *testing.T) {
 	data := []byte{1,2}
 	pr, pw := io.Pipe()
+	pgw := NewProgressWriter(pw, 4)
 	go func(){
-		pw.Write(data)
+		pwg := float32(0.0)
+		pgw.OnProgress = func(p float32) {
+			pwg = p
+		}
+		pgw.Write(data)
+		if pgw.Progress() != 0.5 {
+			t.Error("Expected 0.5 progress, got ", pgw.Progress())
+		}
+		if pwg != 0.5 {
+			t.Error("Expected callback 0.5 progress, got ", pwg)
+		}
 		pw.Close()
 	}()
 	prg := float32(0.0)
